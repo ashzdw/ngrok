@@ -48,3 +48,6 @@ ngrok.com ran a pay-what-you-want hosted service of 1.x from early 2013 until Ap
 
 ## Developing on ngrok
 [ngrok developer's guide](docs/DEVELOPMENT.md)
+
+## Added function newly
+Add parameter -port="40000:100" for server starting up. That means a port range from 40000 to 40099. Sever will bind a port number that's between this range for tunnels to clients.
