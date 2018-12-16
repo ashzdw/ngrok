@@ -106,9 +106,23 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 	switch proto {
 	case "tcp":
 		bindTcp := func(port int) error {
-			if t.listener, err = net.ListenTCP("tcp", &net.TCPAddr{IP: net.ParseIP("0.0.0.0"), Port: port}); err != nil {
-				err = t.ctl.conn.Error("Error binding TCP listener: %v", err)
-				return err
+			portRange := GetPortRange()
+			portEnd := portRange.portStart + portRange.portLen
+			if port >= portRange.portStart && port < portEnd {
+				if t.listener, err = net.ListenTCP("tcp", &net.TCPAddr{IP: net.ParseIP("0.0.0.0"), Port: port}); err != nil {
+					err = t.ctl.conn.Error("Error binding TCP listener: %v", err)
+					return err
+				}
+			} else {
+				for port = portRange.portStart; port < portEnd; port++ {
+					if t.listener, err = net.ListenTCP("tcp", &net.TCPAddr{IP: net.ParseIP("0.0.0.0"), Port: port}); err == nil {
+						break
+					}
+				}
+				if port >= portEnd {
+					err = t.ctl.conn.Error("Error binding TCP listener: %v", err)
+					return err
+				}
 			}
 
 			// create the url

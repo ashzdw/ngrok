@@ -9,6 +9,8 @@ import (
 	"ngrok/util"
 	"os"
 	"runtime/debug"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -26,6 +28,29 @@ var (
 	opts      *Options
 	listeners map[string]*conn.Listener
 )
+
+// PortRange defines port number range that server will allocate
+type PortRange struct {
+	portStart int
+	portLen   int
+}
+
+// GetPortRange get the defined port number range
+func GetPortRange() *PortRange {
+	portRangeStr := strings.Split(opts.port, ":")
+	portStart, err := strconv.ParseInt(portRangeStr[0], 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	portLen, err := strconv.ParseInt(portRangeStr[1], 10, 32)
+	if err != nil {
+		panic(err)
+	}
+	return &PortRange{
+		portStart: int(portStart),
+		portLen:   int(portLen),
+	}
+}
 
 func NewProxy(pxyConn conn.Conn, regPxy *msg.RegProxy) {
 	// fail gracefully if the proxy connection fails to register
