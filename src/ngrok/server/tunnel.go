@@ -108,7 +108,7 @@ func NewTunnel(m *msg.ReqTunnel, ctl *Control) (t *Tunnel, err error) {
 		bindTcp := func(port int) error {
 			portRange := GetPortRange()
 			portEnd := portRange.portStart + portRange.portLen
-			if port >= portRange.portStart && port < portEnd {
+			if portRange.portLen == 0 || (port >= portRange.portStart && port < portEnd) {
 				if t.listener, err = net.ListenTCP("tcp", &net.TCPAddr{IP: net.ParseIP("0.0.0.0"), Port: port}); err != nil {
 					err = t.ctl.conn.Error("Error binding TCP listener: %v", err)
 					return err

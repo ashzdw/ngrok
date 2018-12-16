@@ -25,7 +25,7 @@ func parseArgs() *Options {
 	tlsKey := flag.String("tlsKey", "", "Path to a TLS key file")
 	logto := flag.String("log", "stdout", "Write log messages to this file. 'stdout' and 'none' have special meanings")
 	loglevel := flag.String("log-level", "DEBUG", "The level of messages to log. One of: DEBUG, INFO, WARNING, ERROR")
-	port := flag.String("port", "40000:10000", "The port range that will be allocated to tunnels")
+	port := flag.String("port", "0:0", "The port range that will be allocated to tunnels. Example: 40000:20")
 	flag.Parse()
 
 	return &Options{
