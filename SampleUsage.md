@@ -2,12 +2,12 @@
 
 ### Compile and run
 1. Download source code.
-   ```
+   ```linux
    git clone https://github.com/ashzdw/ngrok.git
    cd ngrok
    ```
 2. Create certificates.
-   ```   
+   ```linux
    NGROK_DOMAIN="abc.com" #Change to your domain that's resolved to your ngrok server.
 
    openssl genrsa -out base.key 2048
@@ -19,7 +19,7 @@
    cp base.pem assets/client/tls/ngrokroot.crt
    ```
 3. Compile server and client. The output will be in `bin` direcory. `ngrokd` is server, `ngrok` is client.
-   ```
+   ```linux
    make release-server release-client
 
    # below is examples for cross compile
@@ -28,7 +28,7 @@
    GOOS=linux GOARCH=arm make release-client
    ```
 4. Start server
-   ```
+   ```linux
    nohup ./bin/ngrokd -tlsKey=server.key -tlsCrt=server.crt -domain="your domain" -httpAddr=":8081" -port="40000:100" &
    ```
 5. Client side steps
@@ -56,7 +56,7 @@
          https: 172.3.2.1:443
       ```
    2. Start client
-      ```
+      ```linux
       ./ngrok -config ngrok.cfg start ssh ftp
       or
       ./ngrok -config ngrok.cfg start-all
